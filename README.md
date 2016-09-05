@@ -1,2 +1,2 @@
 # my
-my project for prectise
+my project for practise boot
