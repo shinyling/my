@@ -1,0 +1,60 @@
+import org.apache.tomcat.Jar
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+version= "1.0"
+buildscript {
+    ext {
+        springBootVersion = '1.4.0.RELEASE'
+        shiroVersion = '1.2.3'
+    }
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies{
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+[compileJava,compileTestJava,javadoc]*.options*.encoding = "UTF-8"
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("org.springframework.boot:spring-boot-starter-test")
+    compile("org.springframework.boot:spring-boot-starter-aop")
+    compile("org.springframework.boot:spring-boot-configuration-processor")
+    compile("org.mybatis.mybatis")
+    compile("org.mybatis.mybatis-spring")
+    compile("org.apache.shiro.shiro-core:1.2.3")
+    compile("org.apache.shiro.shiro-web:1.2.3")
+    compile("org.apache.shiro.shiro-spring:1.2.3")
+    compile("org.apache.shiro.shiro-ehcache:1.2.3")
+    compile("com.alibaba.druid:1.0.20")
+    compile("org.mybatis.spring.boot.mybatis-spring-boot-starter:1.1.1")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+task jarWithoutResource(type: Jar){
+    baseName project.name
+    from("buildDir/classes/main")
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '1.12'
+}
+
+war{
+    dependsOn jarWithoutResources
+    from("$projectDir/src/main/sevRes"){
+        include "*.properties"
+        into("WEB-INF/classes")
+    }
+    classpath=classpath - sourceSets.main.output
+    classpath fileTree(dir:ibsDir,include:"${project.name}-${version}.jar")
+}

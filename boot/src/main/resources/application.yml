@@ -1,0 +1,28 @@
+logging:
+  config: classpath:logback.xml
+  path: /logs/cjgc
+  level: DEBUG
+spring:
+  datasource:
+    url: jdbc:mysql://120.25.195.170:3306/superfactory?useUnicode=true&characterEncoding=UTF-8&amp;useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;zeroDateTimeBehavior=round&allowMultiQueries=true&useSSL=false
+    username: root
+    password: mysql@cjgc
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    filters : stat,wall,log4j
+    maxActive : 50
+    initialSize : 5
+    maxWait : 30000
+    minIdle : 1
+    timeBetweenEvictionRunsMillis: 3000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery : select 'x'
+    testWhileIdle : true
+    testOnBorrow : false
+    testOnReturn : false
+    poolPreparedStatements : true
+    maxPoolPreparedStatementPerConnectionSize : 20
+    connectionProperties : druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    useGlobalDataSourceStat : true
+  aop:
+    auto: true
